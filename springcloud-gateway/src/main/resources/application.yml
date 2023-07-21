@@ -1,0 +1,25 @@
+server:
+  port: 8080
+eureka:
+  instance:
+    hostname: localhost
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: first-microservice
+          uri: http://localhost:8081/
+          predicates:
+            - Path=/first/*
+        - id: second-microservice
+          uri: http://localhost:8082/
+          predicates:
+            - Path=/second/*
+          filters:
+            - name: RequestSize
+              args:
+                maxSize: 5000000
+      default-filters:
+        - FirstServiceFilter
