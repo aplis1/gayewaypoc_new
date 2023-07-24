@@ -18,7 +18,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Component
-public class FirstServiceFilter extends AbstractGatewayFilterFactory {
+public class FirstServiceFilter extends AbstractGatewayFilterFactory<FirstServiceFilter.Config> {
 
 
     private static final String CACHED_REQUEST_BODY_KEY = "cachedRequestBodyObject";;
@@ -33,8 +33,12 @@ public class FirstServiceFilter extends AbstractGatewayFilterFactory {
 
     String authenticatedUser = null;
 
+    public FirstServiceFilter() {
+        super(Config.class);
+    }
+
     @Override
-    public GatewayFilter apply(Object config) {
+    public GatewayFilter apply(Config config) {
         return ((exchange, chain) -> {
             return authenticateRequest(exchange, chain);
         });
@@ -73,6 +77,10 @@ public class FirstServiceFilter extends AbstractGatewayFilterFactory {
             }
             return exchange.mutate().request(mutatedRequest).build();
         }).flatMap(chain::filter);
+
+    }
+
+    public static class Config {
 
     }
 }
