@@ -4,6 +4,8 @@ eureka:
   instance:
     hostname: localhost
 spring:
+  main:
+    web-application-type: reactive
   application:
     name: api-gateway
   cloud:
